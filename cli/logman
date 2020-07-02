@@ -1,0 +1,158 @@
+#!/usr/bin/perl
+
+use strict;
+use warnings;
+
+use File::Slurp;
+use MIME::Base64 qw(decode_base64);
+
+my $is_cli_response = 0;
+my $cli_response_b64 = '';
+
+
+my $operation = shift or usage("must specify an operation");
+
+usage("Invalid operation: $operation") unless ($operation =~ /^(raw)$/);
+
+if ($operation eq 'raw')
+{
+    my $type = 'ssh';
+    my $source = shift or die("must specify a file\n");
+    if ($source eq 'snmp')
+    {
+        $type = 'snmp';
+        $source = shift or die("must specify a file\n");
+    }
+
+    convert_to_raw($source, $type);
+}
+elsif ($operation eq 'help')
+{
+    usage();
+}
+
+sub usage
+{
+    my $message = shift;
+
+    print STDERR $message . "\n\n" if ($message);
+    print STDERR "Usage:\n";
+    print STDERR "  logman <operation> <args..>\n";
+    print STDERR "\n";
+    print STDERR " raw - Convert log into a raw session log without an debug information\n";
+    print STDERR "   eg:\n";
+    print STDERR "  logman raw <filename>\n";
+
+    exit(1);
+}
+
+sub convert_to_raw
+{
+
+    my $file = shift or die;
+    my $type = shift or die;
+
+    my $contents = read_file($file);
+
+    if ($contents =~ /\[ZipTie::CLIProtocolFactory\] Using/)
+    {
+        convert_log_to_raw($contents, $type);
+    }
+    elsif ($contents =~ /^<recording adapterId/m)
+    {
+        convert_record_to_raw($contents);
+    }
+    else
+    {
+        die("Unknown log type\n");
+    }
+}
+
+sub convert_record_to_raw
+{
+    my ($contents) = @_;
+
+    require XML::Parser;
+
+    my $p = XML::Parser->new(Handlers => {Start => \&handle_start, End => \&handle_end, Char => \&handle_char});
+    $p->parse($contents);
+}
+
+sub handle_start
+{
+    my $expat = shift or die;
+    my $elem = shift or die;
+    my %attrs = @_;
+
+    if ($elem eq 'cliResponse')
+    {
+        $is_cli_response = 1;
+    }
+}
+
+sub handle_end
+{
+    my ($expat, $elem) = @_;
+    if ($elem eq 'cliResponse')
+    {
+        $is_cli_response = 0;
+        print decode_base64($cli_response_b64);
+        $cli_response_b64 = '';
+    }
+}
+
+sub handle_char
+{
+    my ($expat, $string) = @_;
+    if ($is_cli_response)
+    {
+        $cli_response_b64 .= $string;
+    }
+}
+
+sub convert_log_to_raw
+{
+    my ($contents, $type) = @_;
+
+    if ($type eq 'ssh')
+    {
+        while ($contents =~ /\[RESPONSE\](.+?)\s-{77}[\r\n]/sg)
+        {
+            my $blob = $1;
+
+            $blob =~ s/^\d\d\d\d-\d\d-\d\d.+?\] ?//mg;
+            $blob =~ s/^[\r\n]+//;
+            $blob =~ s/[\r\n]+$//;
+
+            next if ($blob eq '^C');
+
+            print $blob;
+        }
+    }
+    elsif ($type eq 'snmp')
+    {
+        print STDERR "Finding SNMP responses...\n";
+        while ($contents =~ /\[ZipTie::SNMP\]\s+([\.\d]+)\s+=>\s+([^\r^\n]+)/g)
+        {
+            my $oid = $1;
+            my $value = $2;
+            my $oid_type = 'STRING';
+            if ($value =~ /^\d+$/)
+            {
+                $oid_type = 'INTEGER';
+            }
+            elsif ($value =~ /^[\.\d]+$/)
+            {
+                $oid_type = 'OID';
+            }
+            elsif ($value =~ /^0x([a-zA-Z0-9]{12})/)
+            {
+                $value = $1;
+                $value =~ s/([a-zA-Z0-9]{2})/$1:/g;
+                $value =~ s/:$//;
+            }
+
+            print "$oid = $oid_type: $value\n";
+        }
+    }
+}

@@ -1,0 +1,502 @@
+C6503#terminal length 0
+C6503#show version
+Cisco Internetwork Operating System Software 
+IOS (tm) c6sup2_rp Software (c6sup2_rp-JK2SV-M), Version 12.1(27b)E4, RELEASE SOFTWARE (fc3)
+Technical Support: http://www.cisco.com/techsupport
+Copyright (c) 1986-2008 by cisco Systems, Inc.
+Compiled Fri 29-Feb-08 14:13 by hqluong
+Image text-base: 0x40008EF4, data-base: 0x41BEA910
+
+ROM: System Bootstrap, Version 12.1(4r)E, RELEASE SOFTWARE (fc1)
+BOOTLDR: c6sup2_rp Software (c6sup2_rp-JK2SV-M), Version 12.1(27b)E4, RELEASE SOFTWARE (fc3)
+
+C6503 uptime is 3 hours, 23 minutes
+Time since C6503 switched to active is 3 hours, 23 minutes
+System returned to ROM by power-on (SP by power-on)
+System image file is "sup-bootflash:c6sup22-jk2sv-mz.121-27b.E4.bin"
+
+
+This product contains cryptographic features and is subject to United
+States and local country laws governing import, export, transfer and
+use. Delivery of Cisco cryptographic products does not imply
+third-party authority to import, export, distribute or use encryption.
+Importers, exporters, distributors and users are responsible for
+compliance with U.S. and local country laws. By using this product you
+agree to comply with applicable laws and regulations. If you are unable
+to comply with U.S. and local laws, return this product immediately.
+
+A summary of U.S. laws governing Cisco cryptographic products may be found at:
+http://www.cisco.com/wwl/export/crypto/tool/stqrg.html
+
+If you require further assistance please contact us by sending email to
+export@cisco.com.
+
+cisco WS-C6503 (R7000) processor (revision 1.1) with 112640K/18432K bytes of memory.
+Processor board ID FOX075206VY
+R7000 CPU at 300Mhz, Implementation 39, Rev 2.1, 256KB L2, 1024KB L3 Cache
+Last reset from power-on
+Bridging software.
+X.25 software, Version 3.0.0.
+SuperLAT software (copyright 1990 by Meridian Technology Corp).
+TN3270 Emulation software.
+1 Virtual Ethernet/IEEE 802.3  interface(s)
+8 Gigabit Ethernet/IEEE 802.3 interface(s)
+381K bytes of non-volatile configuration memory.
+
+16384K bytes of Flash internal SIMM (Sector size 512K).
+Configuration register is 0x2102
+
+C6503#admin show version
+       ^
+% Invalid input detected at '^' marker.
+
+C6503#show running-config
+Building configuration...
+
+Current configuration : 976 bytes
+!
+version 12.1
+service timestamps debug uptime
+service timestamps log uptime
+service password-encryption
+service counters max age 10
+!
+hostname C6503
+!
+boot system flash:c6sup22-jk2sv-mz.121-27b.E4
+aaa new-model
+enable password 7 011F100D
+!
+username lvi password 7 151E1D05
+ip subnet-zero
+!
+!
+!
+ip ssh time-out 120
+ip ssh authentication-retries 3
+mls flow ip destination
+mls flow ipx destination
+!
+!
+spanning-tree mode pvst
+spanning-tree extend system-id
+!
+redundancy
+ mode rpr-plus
+ main-cpu
+  auto-sync running-config
+  auto-sync standard
+!
+!
+!
+interface GigabitEthernet1/1
+ ip address 10.0.2.32 255.255.255.0
+!
+interface GigabitEthernet1/2
+ no ip address
+ shutdown
+!
+interface Vlan1
+ no ip address
+ shutdown
+!
+ip classless
+ip route 0.0.0.0 0.0.0.0 GigabitEthernet1/1
+no ip http server
+!
+snmp-server community public RO
+!
+banner motd ^CWelcome to LVI network!^C
+!
+line con 0
+line vty 0 4
+ password 7 011F100D
+ transport input lat pad mop telnet rlogin udptn nasi ssh
+!
+!
+end
+
+C6503#show snmp
+Chassis: FOX075206VY
+706 SNMP packets input
+    0 Bad SNMP version errors
+    0 Unknown community name
+    0 Illegal operation for community name supplied
+    0 Encoding errors
+    1329 Number of requested variables
+    0 Number of altered variables
+    419 Get-request PDUs
+    134 Get-next PDUs
+    0 Set-request PDUs
+706 SNMP packets output
+    0 Too big errors (Maximum packet size 1500)
+    0 No such name errors
+    0 Bad values errors
+    0 General errors
+    704 Response PDUs
+    0 Trap PDUs
+SNMP global trap: disabled
+
+SNMP logging: disabled
+C6503#show install running
+             ^
+% Invalid input detected at '^' marker.
+
+C6503#show inventory
+             ^
+% Invalid input detected at '^' marker.
+
+C6503#show module all
+Mod Ports Card Type                              Model              Serial No.
+--- ----- -------------------------------------- ------------------ -----------
+  1    2  Catalyst 6000 supervisor 2 (Active)    WS-X6K-SUP2-2GE    SAL0806U40Z
+  2   96  FRU type (0x6003, 0x1FA(506))          WS-X6148X2-RJ-45   SAD081107JZ
+  3    6  Firewall Module                        WS-SVC-FWM-1       SAD0705003K
+
+Mod MAC addresses                       Hw    Fw           Sw           Status
+--- ---------------------------------- ------ ------------ ------------ -------
+  1  0008.7dca.8dc0 to 0008.7dca.8dc1   5.0   7.1(1)       12.1(27b)E4  Ok
+  2  0003.feae.aa64 to 0003.feae.aac3   1.0   Unknown      Unknown      PwrDown
+  3  0003.feab.020c to 0003.feab.0213   1.1   7.2(1)       1.1(3)       Ok
+
+Mod Sub-Module                  Model           Serial           Hw     Status 
+--- --------------------------- --------------- --------------- ------- -------
+  1 Policy Feature Card 2       WS-F6K-PFC2     SAL0806U4K2      3.4    Ok
+  1 Cat6k MSFC 2 daughterboard  WS-F6K-MSFC2    SAD052800E9      1.2    Ok
+
+Mod Online Diag Status 
+--- -------------------
+  1 Pass
+  2 Unknown
+  3 Pass
+C6503#show mod ver
+Mod Port Model              Serial #    Versions
+--- ---- ------------------ ----------- --------------------------------------
+ 1    2  WS-X6K-SUP2-2GE    SAL0806U40Z Hw : 5.0
+                                        Fw : 7.1(1)
+                                        Sw : 12.1(27b)E4
+                                        Fw1: 6.1(3) 
+                                        Sw1: 8.5(0.23)COS6 
+         WS-F6K-MSFC2       SAD052800E9 Hw : 1.2
+                                        Fw : 12.1(4r)E
+                                        Sw : 12.1(27b)E4
+         WS-F6K-PFC2        SAL0806U4K2 Hw : 3.4
+ 2   96  WS-X6148X2-RJ-45   SAD081107JZ Hw : 1.0
+                                        Fw : unknown
+                                        Sw : unknown
+ 3    6  WS-SVC-FWM-1       SAD0705003K Hw : 1.1
+                                        Fw : 7.2(1) 
+                                        Sw : 1.1(3)
+C6503#show power
+system power redundancy mode = redundant
+system power redundancy operationally = non-redundant
+system power total =      919.38 Watts (21.89 Amps @ 42V)
+system power used =       587.58 Watts (13.99 Amps @ 42V)
+system power available =  331.80 Watts ( 7.90 Amps @ 42V)
+                        Power-Capacity PS-Fan Output Oper
+PS   Type               Watts   A @42V Status Status State
+---- ------------------ ------- ------ ------ ------ -----
+1    PWR-950-AC          919.38 21.89  -      -      off
+2    PWR-950-AC          919.38 21.89  OK     OK     on 
+                        Pwr-Allocated  Oper
+Fan  Type               Watts   A @42V State
+---- ------------------ ------- ------ -----
+1    FAN-MOD-3HS         125.16  2.98  OK
+                        Pwr-Requested  Pwr-Allocated  Admin Oper
+Slot Card-Type          Watts   A @42V Watts   A @42V State State
+---- ------------------ ------- ------ ------- ------ ----- -----
+1    WS-X6K-SUP2-2GE     145.32  3.46   145.32  3.46  on    on
+2    WS-X6148X2-RJ-45    145.32  3.46   145.32  3.46  on    off (not supported)
+3    WS-SVC-FWM-1        171.78  4.09   171.78  4.09  on    on
+C6503#show idprom all
+IDPROM for backplane #0
+  (FRU is 'Catalyst 6500 3-slot backplane')
+  OEM String = 'Cisco Systems'
+  Product Number = 'WS-C6503'
+  Serial Number = 'FOX075206VY'
+  Manufacturing Assembly Number = '73-6753-04'
+  Manufacturing Assembly Revision = 'A1'
+  Hardware Revision = 1.1
+  Current supplied (+) or consumed (-) = -0.80A
+
+IDPROM for clock #1
+  (FRU is 'OSR-7600 Clock FRU')
+  OEM String = 'Cisco Systems'
+  Product Number = 'CLK-7600'
+  Serial Number = 'NWG07500514'
+  Manufacturing Assembly Number = '73-6941-02'
+  Manufacturing Assembly Revision = 'B0'
+  Hardware Revision = 1.0
+  Current supplied (+) or consumed (-) =  -
+
+IDPROM for supervisor #1
+  (FRU is 'Catalyst 6000 supervisor 2')
+  OEM String = 'Cisco Systems'
+  Product Number = 'WS-X6K-SUP2-2GE'
+  Serial Number = 'SAL0806U40Z'
+  Manufacturing Assembly Number = '73-8006-07'
+  Manufacturing Assembly Revision = 'A0'
+  Hardware Revision = 5.0
+  Current supplied (+) or consumed (-) = -3.06A
+
+IDPROM for EARL #1
+  (FRU is 'Policy Feature Card 2')
+  OEM String = 'Cisco Systems'
+  Product Number = 'WS-F6K-PFC2'
+  Serial Number = 'SAL0806U4K2'
+  Manufacturing Assembly Number = '73-4294-14'
+  Manufacturing Assembly Revision = 'A0'
+  Hardware Revision = 3.4
+  Current supplied (+) or consumed (-) =  -
+
+IDPROM for RP #1
+  (FRU is 'Cat6k MSFC 2 daughterboard')
+  OEM String = 'Cisco Systems'
+  Product Number = 'WS-F6K-MSFC2'
+  Serial Number = 'SAD052800E9'
+  Manufacturing Assembly Number = '73-4385-04'
+  Manufacturing Assembly Revision = 'A0'
+  Hardware Revision = 1.2
+  Current supplied (+) or consumed (-) = -0.40A
+
+IDPROM for power-supply #1
+  (FRU is 'AC power supply, 950 watt')
+  OEM String = 'Cisco Systems, Inc.'
+  Product Number = 'PWR-950-AC'
+  Serial Number = 'ABC08026100'
+  Manufacturing Assembly Number = '34-1847-01'
+  Manufacturing Assembly Revision = 'B0'
+  Hardware Revision = 1.0
+  Current supplied (+) or consumed (-) = 21.89A
+
+IDPROM for power-supply #2
+  (FRU is 'AC power supply, 950 watt')
+  OEM String = 'Cisco Systems, Inc.'
+  Product Number = 'PWR-950-AC'
+  Serial Number = 'ABC08026101'
+  Manufacturing Assembly Number = '34-1847-01'
+  Manufacturing Assembly Revision = 'B0'
+  Hardware Revision = 1.0
+  Current supplied (+) or consumed (-) = 21.89A
+
+IDPROM for module #1
+  (FRU is 'Catalyst 6000 supervisor 2')
+  OEM String = 'Cisco Systems'
+  Product Number = 'WS-X6K-SUP2-2GE'
+  Serial Number = 'SAL0806U40Z'
+  Manufacturing Assembly Number = '73-8006-07'
+  Manufacturing Assembly Revision = 'A0'
+  Hardware Revision = 5.0
+  Current supplied (+) or consumed (-) = -3.06A
+
+IDPROM for module #2
+  (FRU is 'FRU type (0x6003, 0x1FA(506))')
+  OEM String = 'Cisco Systems'
+  Product Number = 'WS-X6148X2-RJ-45'
+  Serial Number = 'SAD081107JZ'
+  Manufacturing Assembly Number = '73-8803-06'
+  Manufacturing Assembly Revision = 'A0'
+  Hardware Revision = 1.0
+  Current supplied (+) or consumed (-) = -2.65A
+
+IDPROM for module #3
+  (FRU is 'Firewall Module')
+  OEM String = 'Cisco Systems'
+  Product Number = 'WS-SVC-FWM-1'
+  Serial Number = 'SAD0705003K'
+  Manufacturing Assembly Number = '73-7400-02'
+  Manufacturing Assembly Revision = 'A0'
+  Hardware Revision = 1.1
+  Current supplied (+) or consumed (-) = -4.09A
+
+C6503#show startup-config
+Using 976 out of 391160 bytes
+!
+version 12.1
+service timestamps debug uptime
+service timestamps log uptime
+service password-encryption
+service counters max age 10
+!
+hostname C6503
+!
+boot system flash:c6sup22-jk2sv-mz.121-27b.E4
+aaa new-model
+enable password 7 011F100D
+!
+username lvi password 7 151E1D05
+ip subnet-zero
+!
+!
+!
+ip ssh time-out 120
+ip ssh authentication-retries 3
+mls flow ip destination
+mls flow ipx destination
+!
+!
+spanning-tree mode pvst
+spanning-tree extend system-id
+!
+redundancy
+ mode rpr-plus
+ main-cpu
+  auto-sync running-config
+  auto-sync standard
+!
+!
+!
+interface GigabitEthernet1/1
+ ip address 10.0.2.32 255.255.255.0
+!
+interface GigabitEthernet1/2
+ no ip address
+ shutdown
+!
+interface Vlan1
+ no ip address
+ shutdown
+!
+ip classless
+ip route 0.0.0.0 0.0.0.0 GigabitEthernet1/1
+no ip http server
+!
+snmp-server community public RO
+!
+banner motd ^CWelcome to LVI network!^C
+!
+line con 0
+line vty 0 4
+ password 7 011F100D
+ transport input lat pad mop telnet rlogin udptn nasi ssh
+!
+!
+end
+
+C6503#show interfaces
+Vlan1 is administratively down, line protocol is down 
+  Hardware is EtherSVI, address is 000b.45b3.020a (bia 000b.45b3.020a)
+  MTU 1500 bytes, BW 1000000 Kbit, DLY 10 usec, 
+     reliability 255/255, txload 1/255, rxload 1/255
+  Encapsulation ARPA, loopback not set
+  ARP type: ARPA, ARP Timeout 04:00:00
+  Last input never, output never, output hang never
+  Last clearing of "show interface" counters never
+  Input queue: 0/75/0/0 (size/max/drops/flushes); Total output drops: 0
+  Queueing strategy: fifo
+  Output queue: 0/40 (size/max)
+  5 minute input rate 0 bits/sec, 0 packets/sec
+  5 minute output rate 0 bits/sec, 0 packets/sec
+     0 packets input, 0 bytes, 0 no buffer
+     Received 0 broadcasts (0 IP multicast)
+     0 runts, 0 giants, 0 throttles
+     0 input errors, 0 CRC, 0 frame, 0 overrun, 0 ignored
+     0 packets output, 0 bytes, 0 underruns
+     0 output errors, 1 interface resets
+     0 output buffer failures, 0 output buffers swapped out
+GigabitEthernet1/1 is up, line protocol is up (connected)
+  Hardware is C6k 1000Mb 802.3, address is 000b.45b3.020a (bia 000b.45b3.020a)
+  Internet address is 10.0.2.32/24
+  MTU 1500 bytes, BW 1000000 Kbit, DLY 10 usec, 
+     reliability 255/255, txload 1/255, rxload 1/255
+  Encapsulation ARPA, loopback not set
+  Keepalive set (10 sec)
+  Full-duplex, 1000Mb/s, media type is T
+  input flow-control is off, output flow-control is on 
+  Clock mode is auto
+  ARP type: ARPA, ARP Timeout 04:00:00
+  Last input 00:00:00, output 00:00:00, output hang never
+  Last clearing of "show interface" counters never
+  Input queue: 0/75/0/0 (size/max/drops/flushes); Total output drops: 0
+  Queueing strategy: fifo
+  Output queue: 0/40 (size/max)
+  5 minute input rate 4000 bits/sec, 7 packets/sec
+  5 minute output rate 0 bits/sec, 0 packets/sec
+  L2 Switched: ucast: 13938 pkt, 1534148 bytes - mcast: 86427 pkt, 6512813 bytes
+  L3 in Switched: ucast: 0 pkt, 0 bytes - mcast: 0 pkt, 0 bytes mcast
+  L3 out Switched: ucast: 0 pkt, 0 bytes 
+     97774 packets input, 8362409 bytes, 0 no buffer
+     Received 94394 broadcasts (0 IP multicast)
+     0 runts, 0 giants, 0 throttles
+     0 input errors, 0 CRC, 0 frame, 0 overrun, 0 ignored
+     0 watchdog, 0 multicast, 0 pause input
+     0 input packets with dribble condition detected
+     3268 packets output, 470090 bytes, 0 underruns
+     0 output errors, 0 collisions, 2 interface resets
+     0 babbles, 0 late collision, 0 deferred
+     0 lost carrier, 0 no carrier, 0 PAUSE output
+     0 output buffer failures, 0 output buffers swapped out
+GigabitEthernet1/2 is administratively down, line protocol is down (disabled)
+  Hardware is C6k 1000Mb 802.3, address is 000b.45b3.020a (bia 000b.45b3.020a)
+  MTU 1500 bytes, BW 1000000 Kbit, DLY 10 usec, 
+     reliability 255/255, txload 1/255, rxload 1/255
+  Encapsulation ARPA, loopback not set
+  Keepalive set (10 sec)
+  Full-duplex, 1000Mb/s
+  input flow-control is off, output flow-control is off
+  Clock mode is auto
+  ARP type: ARPA, ARP Timeout 04:00:00
+  Last input never, output never, output hang never
+  Last clearing of "show interface" counters never
+  Input queue: 0/75/0/0 (size/max/drops/flushes); Total output drops: 0
+  Queueing strategy: fifo
+  Output queue: 0/40 (size/max)
+  5 minute input rate 0 bits/sec, 0 packets/sec
+  5 minute output rate 0 bits/sec, 0 packets/sec
+     0 packets input, 0 bytes, 0 no buffer
+     Received 0 broadcasts (0 IP multicast)
+     0 runts, 0 giants, 0 throttles
+     0 input errors, 0 CRC, 0 frame, 0 overrun, 0 ignored
+     0 watchdog, 0 multicast, 0 pause input
+     0 input packets with dribble condition detected
+     0 packets output, 0 bytes, 0 underruns
+     0 output errors, 0 collisions, 1 interface resets
+     0 babbles, 0 late collision, 0 deferred
+     0 lost carrier, 0 no carrier, 0 PAUSE output
+     0 output buffer failures, 0 output buffers swapped out
+C6503#show ip ospf interface
+
+C6503#show standby
+
+C6503#show vrrp
+            ^
+% Invalid input detected at '^' marker.
+
+C6503#show glbp
+           ^
+% Invalid input detected at '^' marker.
+
+C6503#show vlan
+
+VLAN Name                             Status    Ports
+---- -------------------------------- --------- -------------------------------
+1    default                          active    
+1002 fddi-default                     act/unsup 
+1003 token-ring-default               act/unsup 
+1004 fddinet-default                  act/unsup 
+1005 trnet-default                    act/unsup 
+
+VLAN Type  SAID       MTU   Parent RingNo BridgeNo Stp  BrdgMode Trans1 Trans2
+---- ----- ---------- ----- ------ ------ -------- ---- -------- ------ ------
+1    enet  100001     1500  -      -      -        -    -        0      0   
+1002 fddi  101002     1500  -      -      -        -    -        0      0   
+1003 tr    101003     1500  -      -      -        -    -        0      0   
+1004 fdnet 101004     1500  -      -      -        ieee -        0      0   
+1005 trnet 101005     1500  -      -      -        ibm  -        0      0   
+
+Remote SPAN VLANsshow vtp status
+VTP Version                     : 2
+Configuration Revision          : 0
+Maximum VLANs supported locally : 1005
+Number of existing VLANs        : 5
+VTP Operating Mode              : Server
+VTP Domain Name                 : 
+VTP Pruning Mode                : Disabled
+VTP V2 Mode                     : Disabled
+VTP Traps Generation            : Disabled
+MD5 digest                      : 0x57 0xCD 0x40 0x65 0x63 0x59 0x47 0xBD 
+Configuration last modified by 0.0.0.0 at 0-0-00 00:00:00
+Local updater ID is 127.0.0.12 on interface EO0/0 (first interface found)
+C6503#copy running-config tftp
+%Error : tftp is not supported because this is just a lowly simulator (-leo)
+C6503#

@@ -1,0 +1,12 @@
+[Unit]
+Description=Simulator SNMP Agent
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/java -Djava.security.egd=file:/dev/./urandom -jar /home/lvi/simsnmp-all.jar
+WorkingDirectory=/home/lvi
+User=root
+ExecStartPre=/home/lvi/setup_ips.pl
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,3 @@
+SNMPv2-MIB::sysDescr.0 = STRING: Cisco IOS (simulator default)
+SNMPv2-MIB::sysObjectID.0 = OID: SNMPv2-SMI::enterprises.9.1.620
+SNMPv2-MIB::sysName.0 = STRING: simulator

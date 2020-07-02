@@ -1,0 +1,12 @@
+SNMPv2-MIB::sysDescr.0 = STRING: Cisco Internetwork Operating System Software
+IOS (tm) c6sup2_rp Software (c6sup2_rp-JK2SV-M), Version 12.1(27b)E4, RELEASE SOFTWARE (fc3)
+Technical Support: http://www.cisco.com/techsupport
+Copyright (c) 1986-2008 by cisco Systems, Inc.
+Compiled Fri
+SNMPv2-MIB::sysObjectID.0 = OID: SNMPv2-SMI::enterprises.9.1.449
+DISMAN-EVENT-MIB::sysUpTimeInstance = Timeticks: (1038627) 2:53:06.27
+SNMPv2-MIB::sysContact.0 = STRING:
+SNMPv2-MIB::sysName.0 = STRING: C6503
+SNMPv2-MIB::sysLocation.0 = STRING:
+SNMPv2-MIB::sysServices.0 = INTEGER: 78
+SNMPv2-MIB::sysORLastChange.0 = Timeticks: (0) 0:00:00.00
