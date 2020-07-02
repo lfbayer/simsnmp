@@ -109,6 +109,19 @@ This is a simple script that creates a bunch of IP addresses on eth0.
 
 It will create all IP addresses in the range of 10.128.0.1 to 10.128.2.254. Modify this file to match the interface and IP address scheme you would like to use.
 
+
+## Configuring SSH
+
+There should be no special configuration necessary for SSH to work. So long as there is a user with /home/lvi/login-shell.pl configured as the login shell, the login will work.
+
+## Configuring Telnet support
+*Optional*
+Telnet support can be added by simply installing telnet-server (in.telnetd)
+
+## Configuring FTP support
+*Optional*
+Incoming FTP can also be supported by configuring a FTP server like vsftpd...
+
 # Starting
 
 No action is required to start the login shell, just log in with the created user and it should drop you in a shell.
@@ -116,18 +129,6 @@ No action is required to start the login shell, just log in with the created use
 The SNMP daemon and setup_ips.pl script will both be run when the simsnmp.service systemd service unit is started. `systemctl start simsnmp`
 
 Note: the SNMP daemon must be restarted after any new IP addresses are added to the system, as currently it doesn't listen on INADDR_ANY, but instead iterates over the available IPs and listens on each one individually on startup. So new IPs won't be listening unless the service is restarted.
-
-# Configuring SSH
-
-There should be no special configuration necessary for SSH to work. So long as there is a user with /home/lvi/login-shell.pl configured as the login shell, the login will work.
-
-# Configuring Telnet support
-
-Telnet support can be added by simply installing telnet-server (in.telnetd)
-
-# Configuring FTP support
-
-Incoming FTP can also be supported by configuring a FTP server like vsftpd...
 
 [Build Status]:https://travis-ci.org/lfbayer/simsnmp
 [Build Status img]:https://travis-ci.org/lfbayer/simsnmp.svg?branch=master
