@@ -47,7 +47,7 @@ The logman script can be used for converting LogicVein "Net LineDancer" adapter 
 
 Run maven to create the `simsnmp-all.jar`:
 ```
-mvn assembly:assembly
+mvn clean package assembly:single
 ```
 
 This will create `simsnmp-all.jar` in the `target/` folder.
@@ -141,4 +141,3 @@ Note: the SNMP daemon must be restarted after any new IP addresses are added to 
    
 [Javadocs]:http://javadoc.io/doc/com.lbayer/simsnmp
 [Javadocs img]:http://javadoc.io/badge/com.lbayer/simsnmp.svg
- 
